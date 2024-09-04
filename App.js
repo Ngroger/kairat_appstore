@@ -1,20 +1,32 @@
+import React, { Component } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import MainScreen from './src/components/screens/MainScreen';
+import { FontLoader } from './src/helper/FontLoader';
+import AppNavigation from './src/components/ui/navigation/AppNavigation';
+import { WebViewProvider } from './src/context/WebViewContext';
+import BottomTabs from './src/components/ui/BottomTabs';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fontsLoaded: false
+    }
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  async componentDidMount() {
+    await FontLoader(); // Вызываем функцию загрузки шрифтов
+    this.setState({ fontsLoaded: true });
+  }
+
+  render() {
+    return (
+      <WebViewProvider>
+        <AppNavigation />
+      </WebViewProvider>
+    );
+  }
+};
+
+export default App;
